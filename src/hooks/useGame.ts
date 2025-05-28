@@ -7,8 +7,8 @@ export const useGame = () => {
   const [gameState, setGameState] = useState<GameState>({
     currentQuestionIndex: 0,
     score: 0,
-    timeRemaining: 0,
-    totalTime: 0,
+    timeElapsed: 0,
+    totalTime: 30 * 60, // 30 minutes
     mistakes: 0,
     isComplete: false,
     showHints: false,
@@ -34,28 +34,23 @@ export const useGame = () => {
       return question;
     });
     setShuffledQuestions(shuffledWithOptions);
-    setGameState(prev => ({
-      ...prev,
-      timeRemaining: 30 * 60, // 30 minutes
-      totalTime: 30 * 60
-    }));
     setQuestionStartTime(Date.now());
   }, []);
 
-  // Timer
+  // Timer - now counting upwards
   useEffect(() => {
-    if (gameState.timeRemaining > 0 && !gameState.isComplete) {
+    if (gameState.timeElapsed < gameState.totalTime && !gameState.isComplete) {
       const timer = setTimeout(() => {
         setGameState(prev => ({
           ...prev,
-          timeRemaining: prev.timeRemaining - 1
+          timeElapsed: prev.timeElapsed + 1
         }));
       }, 1000);
       return () => clearTimeout(timer);
-    } else if (gameState.timeRemaining === 0) {
+    } else if (gameState.timeElapsed >= gameState.totalTime) {
       setGameState(prev => ({ ...prev, isComplete: true }));
     }
-  }, [gameState.timeRemaining, gameState.isComplete]);
+  }, [gameState.timeElapsed, gameState.isComplete, gameState.totalTime]);
 
   const getCurrentQuestion = () => shuffledQuestions[gameState.currentQuestionIndex];
 
@@ -102,8 +97,6 @@ export const useGame = () => {
       ...prev,
       score: prev.score + points,
       mistakes: isCorrect ? prev.mistakes : prev.mistakes + 1,
-      showHints: false,
-      hintIndex: 0,
       userAnswers: prev.userAnswers.map((ans, idx) => 
         idx === prev.currentQuestionIndex ? answer : ans
       )
@@ -134,6 +127,15 @@ export const useGame = () => {
     }
   }, [gameState.currentQuestionIndex, shuffledQuestions.length]);
 
+  const resetQuestion = useCallback(() => {
+    setGameState(prev => ({
+      ...prev,
+      showHints: false,
+      hintIndex: 0
+    }));
+    setQuestionStartTime(Date.now());
+  }, []);
+
   const showHint = useCallback(() => {
     const currentQuestion = getCurrentQuestion();
     if (currentQuestion && gameState.hintIndex < currentQuestion.hints.length) {
@@ -160,7 +162,7 @@ export const useGame = () => {
     setGameState({
       currentQuestionIndex: 0,
       score: 0,
-      timeRemaining: 30 * 60,
+      timeElapsed: 0,
       totalTime: 30 * 60,
       mistakes: 0,
       isComplete: false,
@@ -179,6 +181,7 @@ export const useGame = () => {
     getCurrentQuestion,
     submitAnswer,
     nextQuestion,
+    resetQuestion,
     showHint,
     resetGame
   };

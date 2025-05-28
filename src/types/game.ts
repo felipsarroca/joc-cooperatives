@@ -2,7 +2,7 @@
 export interface GameState {
   currentQuestionIndex: number;
   score: number;
-  timeRemaining: number;
+  timeElapsed: number;
   totalTime: number;
   mistakes: number;
   isComplete: boolean;

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useGame } from '../hooks/useGame';
 import GameHeader from '../components/GameHeader';
@@ -14,6 +13,7 @@ const Index = () => {
     getCurrentQuestion,
     submitAnswer,
     nextQuestion,
+    resetQuestion,
     showHint,
     resetGame
   } = useGame();
@@ -136,6 +136,7 @@ const Index = () => {
           question={currentQuestion}
           onSubmitAnswer={submitAnswer}
           onNextQuestion={nextQuestion}
+          onResetQuestion={resetQuestion}
           onShowHint={showHint}
           showHints={gameState.showHints}
           hintIndex={gameState.hintIndex}

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Question } from '../data/questions';
 import MultipleChoiceQuestion from './questions/MultipleChoiceQuestion';
 import TrueFalseQuestion from './questions/TrueFalseQuestion';
@@ -12,6 +12,7 @@ interface QuestionCardProps {
   question: Question;
   onSubmitAnswer: (answer: string) => boolean;
   onNextQuestion: () => void;
+  onResetQuestion: () => void;
   onShowHint: () => void;
   showHints: boolean;
   hintIndex: number;
@@ -22,6 +23,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   question,
   onSubmitAnswer,
   onNextQuestion,
+  onResetQuestion,
   onShowHint,
   showHints,
   hintIndex,
@@ -32,6 +34,14 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   const [isCorrect, setIsCorrect] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
 
+  // Reset state when question changes
+  useEffect(() => {
+    setUserAnswer('');
+    setIsAnswered(false);
+    setIsCorrect(false);
+    setShowFeedback(false);
+  }, [question.id]);
+
   const handleSubmitAnswer = () => {
     if (!userAnswer.trim()) return;
     
@@ -39,22 +49,29 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     setIsAnswered(true);
     setIsCorrect(correct);
     setShowFeedback(true);
+
+    // If correct and can proceed, automatically go to next question after 2 seconds
+    if (correct && canProceed) {
+      setTimeout(() => {
+        onNextQuestion();
+      }, 2000);
+    }
   };
 
-  const handleNextQuestion = () => {
+  const handleTryAgain = () => {
     setUserAnswer('');
     setIsAnswered(false);
     setIsCorrect(false);
     setShowFeedback(false);
-    onNextQuestion();
+    onResetQuestion();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       if (!isAnswered) {
         handleSubmitAnswer();
-      } else if (canProceed && isCorrect) {
-        handleNextQuestion();
+      } else if (!isCorrect) {
+        handleTryAgain();
       }
     }
   };
@@ -136,6 +153,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               <p className={isCorrect ? 'text-green-700' : 'text-red-700'}>
                 {isCorrect ? question.feedback : 'Prova-ho de nou amb l\'ajuda de les pistes.'}
               </p>
+              {isCorrect && canProceed && (
+                <p className="text-green-600 text-sm mt-2">
+                  Passant a la següent pregunta...
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -150,16 +172,18 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           >
             Respondre
           </button>
-        ) : (
-          isCorrect && canProceed && (
-            <button
-              onClick={handleNextQuestion}
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-            >
-              Següent pregunta
-            </button>
-          )
-        )}
+        ) : !isCorrect ? (
+          <button
+            onClick={handleTryAgain}
+            className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+          >
+            Tornar a provar
+          </button>
+        ) : !canProceed ? (
+          <div className="flex-1 bg-green-600 text-white font-semibold py-3 px-6 rounded-lg text-center">
+            Joc completat!
+          </div>
+        ) : null}
       </div>
     </div>
   );
