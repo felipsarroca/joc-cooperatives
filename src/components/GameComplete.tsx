@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Trophy, Clock, Target, AlertCircle, RotateCcw } from 'lucide-react';
 import { GameState, QuestionResult } from '../types/game';
@@ -16,7 +15,7 @@ const GameComplete: React.FC<GameCompleteProps> = ({
   totalQuestions,
   onRestart
 }) => {
-  const totalTimeSpent = gameState.totalTime - gameState.timeRemaining;
+  const totalTimeSpent = gameState.timeElapsed;
   const correctAnswers = questionResults.filter(result => result.correct).length;
   const accuracy = Math.round((correctAnswers / totalQuestions) * 100);
   

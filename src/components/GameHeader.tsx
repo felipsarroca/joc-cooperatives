@@ -27,7 +27,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ gameState, totalQuestions }) =>
           <div className="flex items-center gap-2 bg-blue-100 px-3 py-2 rounded-lg">
             <Clock className="w-4 h-4 text-blue-600" />
             <span className="font-semibold text-blue-700">
-              {formatTime(gameState.timeRemaining)}
+              {formatTime(gameState.timeElapsed)}
             </span>
           </div>
           <div className="flex items-center gap-2 bg-green-100 px-3 py-2 rounded-lg">
