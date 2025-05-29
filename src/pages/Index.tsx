@@ -35,7 +35,7 @@ const Index = () => {
                 <BookOpen className="w-10 h-10 text-white" />
               </div>
               <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                ESCA - Avaluació Gamificada
+                Joc de les Cooperatives
               </h1>
               <p className="text-xl text-gray-600 mb-6">
                 Avalua els teus coneixements sobre Economia Social i Solidària
