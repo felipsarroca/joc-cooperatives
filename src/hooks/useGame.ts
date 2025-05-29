@@ -86,10 +86,14 @@ export const useGame = () => {
         break;
     }
 
-    // Calculate points
+    // Calculate points with increased penalty for errors
     let points = 0;
     if (isCorrect) {
-      points = Math.max(100 - (gameState.hintIndex * 20) - (timeSpent * 2), 10);
+      // Base points reduced by hints used and time spent
+      points = Math.max(100 - (gameState.hintIndex * 25) - (timeSpent * 2), 10);
+    } else {
+      // Penalty for wrong answers: -50 points
+      points = -50;
     }
 
     // Update game state
@@ -102,13 +106,15 @@ export const useGame = () => {
       )
     }));
 
-    // Record result
-    setQuestionResults(prev => [...prev, {
-      questionId: currentQuestion.id,
-      correct: isCorrect,
-      timeSpent,
-      hintsUsed: gameState.hintIndex
-    }]);
+    // Record result only if correct (for tracking purposes)
+    if (isCorrect) {
+      setQuestionResults(prev => [...prev, {
+        questionId: currentQuestion.id,
+        correct: isCorrect,
+        timeSpent,
+        hintsUsed: gameState.hintIndex
+      }]);
+    }
 
     return isCorrect;
   }, [gameState.currentQuestionIndex, gameState.hintIndex, questionStartTime, shuffledQuestions]);
