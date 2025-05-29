@@ -66,6 +66,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     onResetQuestion();
   };
 
+  const handleMatchingReset = () => {
+    // For matching questions, we also need to clear the user answer
+    setUserAnswer('');
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       if (!isAnswered) {
@@ -90,7 +95,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       case 'trueFalse':
         return <TrueFalseQuestion question={question} {...commonProps} />;
       case 'match':
-        return <MatchingQuestion question={question} {...commonProps} />;
+        return <MatchingQuestion question={question} {...commonProps} onReset={handleMatchingReset} />;
       case 'fillBlank':
         return <FillBlankQuestion question={question} {...commonProps} />;
       case 'order':
@@ -151,7 +156,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 {isCorrect ? '¡Correcte!' : 'Incorrecte'}
               </h4>
               <p className={isCorrect ? 'text-green-700' : 'text-red-700'}>
-                {isCorrect ? question.feedback : 'Prova-ho de nou amb l\'ajuda de les pistes.'}
+                {isCorrect ? question.feedback : 
+                  question.type === 'match' 
+                    ? 'Les connexions no són correctes. Prova de nou revisant les definicions.' 
+                    : 'Prova-ho de nou amb l\'ajuda de les pistes.'
+                }
               </p>
               {isCorrect && canProceed && (
                 <p className="text-green-600 text-sm mt-2">
