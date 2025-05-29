@@ -121,9 +121,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         </button>
       </div>
 
-      <h2 className="text-xl font-semibold text-gray-800 mb-6 leading-relaxed">
-        {question.question}
-      </h2>
+      {/* Only show question text for non-fillBlank questions */}
+      {question.type !== 'fillBlank' && (
+        <h2 className="text-xl font-semibold text-gray-800 mb-6 leading-relaxed">
+          {question.question}
+        </h2>
+      )}
 
       {renderQuestion()}
 

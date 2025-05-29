@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { Question, questions } from '../data/questions';
 import { GameState, QuestionResult } from '../types/game';
@@ -79,8 +78,30 @@ export const useGame = () => {
         try {
           const userMatches = JSON.parse(answer);
           const correctMatches = currentQuestion.correctAnswer;
-          isCorrect = JSON.stringify(userMatches) === JSON.stringify(correctMatches);
-        } catch {
+          
+          // Log for debugging
+          console.log('User matches:', userMatches);
+          console.log('Correct matches:', correctMatches);
+          
+          // Check if all keys and values match exactly
+          const userKeys = Object.keys(userMatches).sort();
+          const correctKeys = Object.keys(correctMatches).sort();
+          
+          if (userKeys.length !== correctKeys.length) {
+            isCorrect = false;
+            break;
+          }
+          
+          // Check each key-value pair
+          isCorrect = userKeys.every(key => {
+            const userValue = userMatches[key];
+            const correctValue = correctMatches[key];
+            return userValue === correctValue;
+          });
+          
+          console.log('Match validation result:', isCorrect);
+        } catch (error) {
+          console.error('Error parsing user matches:', error);
           isCorrect = false;
         }
         break;
