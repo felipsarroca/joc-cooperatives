@@ -23,7 +23,7 @@ const FillBlankQuestion: React.FC<FillBlankQuestionProps> = ({
   return (
     <div className="space-y-6" onKeyDown={onKeyPress}>
       <div className="text-xl leading-relaxed bg-blue-50 p-8 rounded-lg border border-blue-200">
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1">
           {parts.map((part, index) => (
             <React.Fragment key={index}>
               <span className="text-gray-800">{part}</span>
@@ -33,14 +33,14 @@ const FillBlankQuestion: React.FC<FillBlankQuestionProps> = ({
                   value={userAnswer}
                   onChange={(e) => !isAnswered && setUserAnswer(e.target.value)}
                   disabled={isAnswered}
-                  className={`mx-2 px-4 py-2 border-2 rounded-lg min-w-32 text-center font-semibold ${
+                  className={`mx-1 px-3 py-2 border-2 rounded-lg min-w-40 text-center font-semibold ${
                     isAnswered
                       ? userAnswer.toLowerCase().trim() === question.correctAnswer.toString().toLowerCase().trim()
                         ? 'border-green-500 bg-green-100 text-green-800'
                         : 'border-red-500 bg-red-100 text-red-800'
                       : 'border-blue-400 bg-white focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300'
                   }`}
-                  placeholder="..."
+                  placeholder="Escriu aquí..."
                   autoFocus
                 />
               )}
