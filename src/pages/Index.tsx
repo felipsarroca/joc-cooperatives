@@ -71,7 +71,7 @@ const Index = () => {
             <div className="bg-gray-50 rounded-xl p-6 mb-8 text-left">
               <h3 className="font-semibold text-gray-800 mb-4">Característiques del joc:</h3>
               <ul className="space-y-2 text-gray-700">
-                <li>• 25 preguntes de diferents tipus (test, vertader/fals, relacionar, completar, ordenar)</li>
+                <li>• 19 preguntes de diferents tipus (test, vertader/fals, relacionar, completar, ordenar)</li>
                 <li>• 30 minuts de temps límit</li>
                 <li>• Sistema de pistes si necessites ajuda</li>
                 <li>• Puntuació basada en encerts i velocitat</li>
