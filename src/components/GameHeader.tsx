@@ -21,7 +21,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ gameState, totalQuestions }) =>
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 mb-6">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-          ESCA - Avaluació Gamificada
+          Joc de les Cooperatives
         </h1>
         <div className="flex items-center gap-4 text-sm md:text-base">
           <div className="flex items-center gap-2 bg-blue-100 px-3 py-2 rounded-lg">
