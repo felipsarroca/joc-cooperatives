@@ -141,7 +141,13 @@ export const useGame = () => {
   }, [gameState.currentQuestionIndex, gameState.hintIndex, questionStartTime, shuffledQuestions]);
 
   const nextQuestion = useCallback(() => {
-    if (gameState.currentQuestionIndex < shuffledQuestions.length - 1) {
+    const isLastQuestion = gameState.currentQuestionIndex >= shuffledQuestions.length - 1;
+    
+    if (isLastQuestion) {
+      // Mark game as complete when finishing the last question
+      setGameState(prev => ({ ...prev, isComplete: true }));
+    } else {
+      // Move to next question
       setGameState(prev => ({
         ...prev,
         currentQuestionIndex: prev.currentQuestionIndex + 1,
@@ -149,8 +155,6 @@ export const useGame = () => {
         hintIndex: 0
       }));
       setQuestionStartTime(Date.now());
-    } else {
-      setGameState(prev => ({ ...prev, isComplete: true }));
     }
   }, [gameState.currentQuestionIndex, shuffledQuestions.length]);
 
