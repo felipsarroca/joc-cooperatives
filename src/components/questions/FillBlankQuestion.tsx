@@ -17,8 +17,25 @@ const FillBlankQuestion: React.FC<FillBlankQuestionProps> = ({
   isAnswered,
   onKeyPress
 }) => {
-  // Split the question text at the blank placeholder
-  const parts = question.question.split('_________');
+  // Split the question text at various blank placeholders
+  let parts: string[] = [];
+  let splitFound = false;
+  
+  // Try different placeholder formats
+  const placeholders = ['_________', '________', '_______', '______', '_____'];
+  
+  for (const placeholder of placeholders) {
+    if (question.question.includes(placeholder)) {
+      parts = question.question.split(placeholder);
+      splitFound = true;
+      break;
+    }
+  }
+  
+  // If no placeholder found, just show the question with an input at the end
+  if (!splitFound) {
+    parts = [question.question + ' '];
+  }
 
   return (
     <div className="space-y-6" onKeyDown={onKeyPress}>
@@ -27,7 +44,7 @@ const FillBlankQuestion: React.FC<FillBlankQuestionProps> = ({
           {parts.map((part, index) => (
             <React.Fragment key={index}>
               <span className="text-gray-800">{part}</span>
-              {index < parts.length - 1 && (
+              {(index < parts.length - 1 || !splitFound) && (
                 <input
                   type="text"
                   value={userAnswer}
