@@ -30,14 +30,22 @@ const Index = () => {
   const handleNextQuestion = () => {
     const isLastQuestion = gameState.currentQuestionIndex >= shuffledQuestions.length - 1;
     
+    console.log('Handle next question - isLastQuestion:', isLastQuestion);
+    
     if (isLastQuestion) {
       // If it's the last question, complete the game
+      console.log('Calling completeGame...');
       completeGame();
     } else {
       // Otherwise, go to next question
       nextQuestion();
     }
   };
+
+  // Debug log for gameState changes
+  React.useEffect(() => {
+    console.log('Game state updated:', gameState);
+  }, [gameState]);
 
   if (!gameStarted) {
     return (
@@ -107,7 +115,9 @@ const Index = () => {
     );
   }
 
-  if (gameState.isComplete) {
+  // Check if game is complete first
+  if (gameStarted && gameState.isComplete) {
+    console.log('Rendering FinalScreen');
     return (
       <FinalScreen
         gameState={gameState}

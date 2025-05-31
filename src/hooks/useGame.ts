@@ -137,14 +137,22 @@ export const useGame = () => {
       }]);
     }
 
+    console.log('Answer submitted, isCorrect:', isCorrect);
+    console.log('Current question index:', gameState.currentQuestionIndex);
+    console.log('Total questions:', shuffledQuestions.length);
+
     return isCorrect;
   }, [gameState.currentQuestionIndex, gameState.hintIndex, questionStartTime, shuffledQuestions]);
 
   const nextQuestion = useCallback(() => {
     const isLastQuestion = gameState.currentQuestionIndex >= shuffledQuestions.length - 1;
     
+    console.log('Next question called, isLastQuestion:', isLastQuestion);
+    console.log('Current index:', gameState.currentQuestionIndex, 'Total questions:', shuffledQuestions.length);
+    
     if (isLastQuestion) {
       // Mark game as complete when finishing the last question
+      console.log('Completing game...');
       setGameState(prev => ({ ...prev, isComplete: true }));
     } else {
       // Move to next question
@@ -159,6 +167,7 @@ export const useGame = () => {
   }, [gameState.currentQuestionIndex, shuffledQuestions.length]);
 
   const completeGame = useCallback(() => {
+    console.log('Complete game function called');
     setGameState(prev => ({ ...prev, isComplete: true }));
   }, []);
 
