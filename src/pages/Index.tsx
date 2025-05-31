@@ -15,7 +15,8 @@ const Index = () => {
     nextQuestion,
     resetQuestion,
     showHint,
-    resetGame
+    resetGame,
+    completeGame
   } = useGame();
 
   const [gameStarted, setGameStarted] = React.useState(false);
@@ -23,6 +24,18 @@ const Index = () => {
   const startGame = () => {
     setGameStarted(true);
     resetGame();
+  };
+
+  const handleNextQuestion = () => {
+    const isLastQuestion = gameState.currentQuestionIndex >= shuffledQuestions.length - 1;
+    
+    if (isLastQuestion) {
+      // If it's the last question, complete the game
+      completeGame();
+    } else {
+      // Otherwise, go to next question
+      nextQuestion();
+    }
   };
 
   if (!gameStarted) {
@@ -135,7 +148,7 @@ const Index = () => {
         <QuestionCard
           question={currentQuestion}
           onSubmitAnswer={submitAnswer}
-          onNextQuestion={nextQuestion}
+          onNextQuestion={handleNextQuestion}
           onResetQuestion={resetQuestion}
           onShowHint={showHint}
           showHints={gameState.showHints}

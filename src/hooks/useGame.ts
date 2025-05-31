@@ -158,6 +158,10 @@ export const useGame = () => {
     }
   }, [gameState.currentQuestionIndex, shuffledQuestions.length]);
 
+  const completeGame = useCallback(() => {
+    setGameState(prev => ({ ...prev, isComplete: true }));
+  }, []);
+
   const resetQuestion = useCallback(() => {
     setGameState(prev => ({
       ...prev,
@@ -214,6 +218,7 @@ export const useGame = () => {
     nextQuestion,
     resetQuestion,
     showHint,
-    resetGame
+    resetGame,
+    completeGame
   };
 };
