@@ -3,6 +3,7 @@ import { useGame } from '../hooks/useGame';
 import GameHeader from '../components/GameHeader';
 import QuestionCard from '../components/QuestionCard';
 import GameComplete from '../components/GameComplete';
+import FinalScreen from '../components/FinalScreen';
 import { Play, BookOpen, Users, Target } from 'lucide-react';
 
 const Index = () => {
@@ -108,19 +109,13 @@ const Index = () => {
 
   if (gameState.isComplete) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-4">
-        <div className="container mx-auto py-8">
-          <GameComplete
-            gameState={gameState}
-            questionResults={questionResults}
-            totalQuestions={shuffledQuestions.length}
-            onRestart={() => {
-              resetGame();
-              setGameStarted(true);
-            }}
-          />
-        </div>
-      </div>
+      <FinalScreen
+        gameState={gameState}
+        onRestart={() => {
+          resetGame();
+          setGameStarted(true);
+        }}
+      />
     );
   }
 
