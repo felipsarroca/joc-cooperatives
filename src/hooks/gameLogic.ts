@@ -53,9 +53,10 @@ export const useGameLogic = (
     console.log('Current index:', gameState.currentQuestionIndex, 'Total questions:', shuffledQuestions.length);
     
     if (isLastQuestion) {
-      console.log('Completing game...');
+      console.log('This is the last question, completing game...');
       updateGameState({ isComplete: true });
     } else {
+      console.log('Moving to next question...');
       updateGameState({
         currentQuestionIndex: gameState.currentQuestionIndex + 1,
         showHints: false,
@@ -66,7 +67,7 @@ export const useGameLogic = (
   }, [gameState.currentQuestionIndex, shuffledQuestions.length, updateGameState, setQuestionStartTime]);
 
   const completeGame = useCallback(() => {
-    console.log('Complete game function called');
+    console.log('Complete game function called - setting isComplete to true');
     updateGameState({ isComplete: true });
   }, [updateGameState]);
 

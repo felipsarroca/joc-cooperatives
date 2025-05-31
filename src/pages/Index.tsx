@@ -2,7 +2,6 @@ import React from 'react';
 import { useGame } from '../hooks/useGame';
 import GameHeader from '../components/GameHeader';
 import QuestionCard from '../components/QuestionCard';
-import GameComplete from '../components/GameComplete';
 import FinalScreen from '../components/FinalScreen';
 import { Play, BookOpen, Users, Target } from 'lucide-react';
 
@@ -30,20 +29,31 @@ const Index = () => {
   const handleNextQuestion = () => {
     const isLastQuestion = gameState.currentQuestionIndex >= shuffledQuestions.length - 1;
     
-    console.log('Handle next question - isLastQuestion:', isLastQuestion);
+    console.log('Handle next question - current index:', gameState.currentQuestionIndex);
+    console.log('Total questions:', shuffledQuestions.length);
+    console.log('Is last question:', isLastQuestion);
     
     if (isLastQuestion) {
-      console.log('Calling completeGame...');
+      console.log('Calling completeGame from handleNextQuestion...');
       completeGame();
     } else {
+      console.log('Calling nextQuestion...');
       nextQuestion();
     }
+  };
+
+  const handleRestart = () => {
+    console.log('Restarting game...');
+    resetGame();
+    setGameStarted(true);
   };
 
   // Debug log for gameState changes
   React.useEffect(() => {
     console.log('Game state updated:', gameState);
-  }, [gameState]);
+    console.log('Game complete?', gameState.isComplete);
+    console.log('Game started?', gameStarted);
+  }, [gameState, gameStarted]);
 
   if (!gameStarted) {
     return (
@@ -113,22 +123,19 @@ const Index = () => {
     );
   }
 
-  // Check if game is complete first - this ensures the final screen appears
+  // Final screen - this should appear when game is complete
   if (gameStarted && gameState.isComplete) {
-    console.log('Rendering FinalScreen');
+    console.log('Rendering FinalScreen - game is complete');
     return (
       <FinalScreen
         gameState={gameState}
-        onRestart={() => {
-          resetGame();
-          setGameStarted(true);
-        }}
+        onRestart={handleRestart}
       />
     );
   }
 
+  // Loading state
   const currentQuestion = getCurrentQuestion();
-  
   if (!currentQuestion) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
@@ -140,6 +147,7 @@ const Index = () => {
     );
   }
 
+  // Game screen
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-4">
       <div className="container mx-auto max-w-4xl py-8">
