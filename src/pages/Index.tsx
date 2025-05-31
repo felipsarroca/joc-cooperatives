@@ -33,11 +33,9 @@ const Index = () => {
     console.log('Handle next question - isLastQuestion:', isLastQuestion);
     
     if (isLastQuestion) {
-      // If it's the last question, complete the game
       console.log('Calling completeGame...');
       completeGame();
     } else {
-      // Otherwise, go to next question
       nextQuestion();
     }
   };
@@ -115,7 +113,7 @@ const Index = () => {
     );
   }
 
-  // Check if game is complete first
+  // Check if game is complete first - this ensures the final screen appears
   if (gameStarted && gameState.isComplete) {
     console.log('Rendering FinalScreen');
     return (
