@@ -41,6 +41,20 @@ export const useGameLogic = (
         timeSpent,
         hintsUsed: gameState.hintIndex
       }]);
+
+      // Check if this was the last question after submitting correct answer
+      const isLastQuestion = gameState.currentQuestionIndex >= shuffledQuestions.length - 1;
+      console.log('After correct answer - is last question?', isLastQuestion);
+      console.log('Current index after answer:', gameState.currentQuestionIndex);
+      console.log('Total questions:', shuffledQuestions.length);
+      
+      if (isLastQuestion) {
+        console.log('This was the last question with correct answer - completing game!');
+        // Use setTimeout to ensure state updates are processed
+        setTimeout(() => {
+          updateGameState({ isComplete: true });
+        }, 100);
+      }
     }
 
     return isCorrect;

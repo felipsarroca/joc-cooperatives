@@ -33,12 +33,12 @@ const Index = () => {
     console.log('Total questions:', shuffledQuestions.length);
     console.log('Is last question:', isLastQuestion);
     
-    if (isLastQuestion) {
-      console.log('Calling completeGame from handleNextQuestion...');
-      completeGame();
-    } else {
+    // Don't call completeGame here - let it be handled in submitAnswer for the last question
+    if (!isLastQuestion) {
       console.log('Calling nextQuestion...');
       nextQuestion();
+    } else {
+      console.log('This is the last question - game completion should be handled in submitAnswer');
     }
   };
 
@@ -54,6 +54,17 @@ const Index = () => {
     console.log('Game complete?', gameState.isComplete);
     console.log('Game started?', gameStarted);
   }, [gameState, gameStarted]);
+
+  // MOST IMPORTANT: Check for game completion FIRST, before anything else
+  if (gameState.isComplete && gameStarted) {
+    console.log('🎉 SHOWING FINAL SCREEN - Game is complete!');
+    return (
+      <FinalScreen
+        gameState={gameState}
+        onRestart={handleRestart}
+      />
+    );
+  }
 
   if (!gameStarted) {
     return (
@@ -120,17 +131,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-    );
-  }
-
-  // Final screen - this should appear when game is complete
-  if (gameStarted && gameState.isComplete) {
-    console.log('Rendering FinalScreen - game is complete');
-    return (
-      <FinalScreen
-        gameState={gameState}
-        onRestart={handleRestart}
-      />
     );
   }
 
