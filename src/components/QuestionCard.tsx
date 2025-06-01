@@ -6,7 +6,7 @@ import TrueFalseQuestion from './questions/TrueFalseQuestion';
 import MatchingQuestion from './questions/MatchingQuestion';
 import FillBlankQuestion from './questions/FillBlankQuestion';
 import OrderingQuestion from './questions/OrderingQuestion';
-import { Lightbulb, CheckCircle, XCircle } from 'lucide-react';
+import { Lightbulb, CheckCircle, XCircle, ArrowRight } from 'lucide-react';
 
 interface QuestionCardProps {
   question: Question;
@@ -49,13 +49,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     setIsAnswered(true);
     setIsCorrect(correct);
     setShowFeedback(true);
-
-    // If correct and can proceed, automatically go to next question after 2 seconds
-    if (correct && canProceed) {
-      setTimeout(() => {
-        onNextQuestion();
-      }, 2000);
-    }
   };
 
   const handleTryAgain = () => {
@@ -165,11 +158,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     : 'Prova-ho de nou amb l\'ajuda de les pistes.'
                 }
               </p>
-              {isCorrect && canProceed && (
-                <p className="text-green-600 text-sm mt-2">
-                  Passant a la següent pregunta...
-                </p>
-              )}
             </div>
           </div>
         </div>
@@ -191,11 +179,19 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           >
             Tornar a provar
           </button>
-        ) : !canProceed ? (
+        ) : canProceed ? (
+          <button
+            onClick={onNextQuestion}
+            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
+            Següent pregunta
+            <ArrowRight className="w-5 h-5" />
+          </button>
+        ) : (
           <div className="flex-1 bg-green-600 text-white font-semibold py-3 px-6 rounded-lg text-center">
             Joc completat!
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );
